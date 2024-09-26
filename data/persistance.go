@@ -41,7 +41,10 @@ func GetAllSecrets() ([]string, error) {
 }
 
 func LookupSecret(key string) (string, error) {
-	return db.Secrets[key], nil
+	if secret, exists := db.Secrets[key]; exists {
+		return secret, nil
+	}
+	return "", fmt.Errorf("secret with name %s does not exist", key)
 }
 
 func AddSecret(name, secret string) error {
